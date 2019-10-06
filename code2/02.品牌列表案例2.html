@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="../node_modules/vue/dist/vue.min.js"></script>
+  <link rel="stylesheet" href="../lib/bootstrap.css">
+</head>
+
+<body>
+  <div class="app">
+
+
+
+
+    <div class="panel panel-primary">
+      <div class="panel-heading">
+        <h3 class="panel-title">添加品牌</h3>
+      </div>
+      <div class="panel-body form-inline">
+        <label>
+          Id:
+          <input type="text" class="form-control" v-model="id">
+        </label>
+
+        <label>
+          Name:
+          <input type="text" class="form-control" v-model="name" @keyup.enter="add">
+          <input type="button" value="添加" class="btn btn-primary" @click="add()">
+        </label>
+
+        <label>
+          🔍搜索名称关键字:
+          <!-- ⚠️注意：Vue中所有的指令，在调用的时候，都以v-开头 -->
+          <input type="text" class="form-control" v-model="keywords" id='search' v-focus v-color="'green'">
+        </label>
+
+        <!-- 使用v-on 绑定事件时，添加括号，用于传参 -->
+      </div>
+    </div>
+
+
+    <table class="table table-hover table-bordered table-striped">
+      <thead>
+        <tr>
+          <th>Id</th>
+          <th>Name</th>
+          <th>ctime</th>
+          <th>Operation</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- 之前， v-for中的数据，都是直接从data上的list中直接渲染过来的！ -->
+        <!-- 现在自定义了search方法，同时把 搜索的关键字通过传参的形式，传递给了serch方法 -->
+        <!-- 在 search 方法内部，通过 执行 for 循环，把所有符合 搜索关键字的数据，保存到 一个新的数组中
+      返回 -->
+        <tr v-for="item in search(keywords)" :key="item.id ">
+          <td>{{item.id}}</td>
+          <td v-text="item.name"></td>
+          <td>{{item.ctime | dateFormat("")}}</td>
+          <td>
+            <a href="#" @click.prevent="del(item.id)">删除</a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+  </div>
+
+  <div class="app2" v-color="'skyblue'" v-fontweight="700" v-fontsize="'30px'">
+    {{dt | dateFormat}}
+  </div>
+
+  <script>
+    // 全局的过滤器,进行时间的格式化
+    // 所谓的全局过滤器，就是所有的VM实例都共享的！
+    Vue.filter('dateFormat', function (dateStr, pattern = ' ') {
+      // 根据给定的时间字符串,得到特定的时间
+      const dt = new Date(dateStr);
+      const y = dt.getFullYear();
+      const m = dt.getMonth() + 1;
+      const d = dt.getDate();
+      // return ` ${y}-${m}-${d} `
+      console.log(pattern);
+
+      if (pattern.toLowerCase() === 'yyyy-mm-dd') {
+        return ` ${y}-${m}-${d} `
+      } else {
+        const hh = dt.getHours();
+        const mm = dt.getMinutes();
+        const ss = dt.getSeconds();
+
+      return ` ${y}-${m}-${d} ${hh}:${mm}:${ss} 这是全局的也就是Glob的`
+
+      }
+    });
+
+
+    // 定义全局按键修饰符
+    Vue.config.keyCodes.f2 = 113;
+
+    // 使用 Vue.directive() 定义全局指令
+    // 其中：参数1:指令的名称，⚠️注意：在定义的时候，指令的名称前面，不加v-；
+    // 在调用的时候，必须在指令名称前 加上 v-
+    // 参数2： 是一个对象，这个对象身上，有一些指令相关的函数，这些函数可以在特定的阶段，执行相关的操作。
+    Vue.directive('focus', {
+      bind: function (el) { // 每当指令绑定到元素上的时候，会立即执行这个函数，只执行一次
+        //  ⚠️注意：在每个 函数中，第一个参数，永远都是el。表示 被绑定了指令的那个元素。这个el参数。是一个原生JS对象
+        //  在元素刚绑定了指令符时候，还没有插入到Dom中去，这时候，调用focus方法没有作用
+        //  因为，一个元素，只有插入到Dom之后，才能获取焦点。
+      },
+      inserted(el) { // 元素插入 Dom中的时候，会执行inserted函数，只触发一次
+        el.focus();
+        // 和JS行为有关的操作，最好在inserted中去执行，防止JS行为不生效
+      },
+      update: function (el) { // 当VNode更新的时候，会执行update ，可能会触发多次
+
+      }
+    });
+
+    // 自定义一个 设置字体颜色的指令
+    Vue.directive('color', {
+      // 样式，只要通过指令绑定给了元素，不管这个元素有没有被插入到页面中去，这个元素肯定有了一个内联样式。
+      // 将来元素肯定会显示到页面中，这时候，浏览器的渲染引擎必然会解析样式，应用给这个元素
+      bind(el, binding) {
+        el.style.color = binding.value;
+        console.log(binding);
+        // 和样式相关的操作，一般都可以在bind中执行
+      },
+
+    })
+
+    // 创建 Vue实例,得到ViewModel
+    const vm = new Vue({
+      el: ".app",
+      data: {
+        list: [
+          { id: 1, name: '华为', ctime: new Date() },
+          { id: 2, name: '苹果🍎', ctime: new Date() },
+        ],
+        id: '',
+        name: '',
+        keywords: '' //搜索的关键字
+      },
+      methods: {
+        add() {
+          this.list.push({ id: this.id, name: this.name, ctime: new Date() });
+          this.id = this.name = " ";
+        },
+        del(id) {
+          // this.list.some((item, i) => {
+          //   if (item.id == id) {
+          //     this.list.splice(i,1);
+          //     // 在数组的some方法中，如果return true， 就会立即终止这个数组的后续循环
+          //     return true;
+          //   }
+          // })
+
+          const index = this.list.findIndex((item) => {
+            if (item.id == id) {
+              return true;
+            }
+          });
+          this.list.splice(index, 1);
+        },
+        search(keywords) { //根据关键字，进行数据的搜索
+          // let newList = []
+          // this.list.forEach(item => {
+          //   if (item.name.indexOf(keywords) != -1){
+          //     newList.push(item);
+          //   }
+          // })
+          // return newList;
+
+          // 注意 ： forEach some filter findIndex every 都属于数组的新方法
+          // 都会对数组的每一项，进行遍历，执行相关的操作；
+          return this.list.filter(item => {
+            // if(item.name.indexOf(keywords) != -1)
+            // 在 es6 中，为字符串提供了一个新方法，叫做 String。prototype。includes（‘要包含的字符串’）
+            // 如果包含返回true，否则返回false
+            if (item.name.includes(keywords)) {
+              return item;
+            }
+          })
+        }
+      }
+    });
+
+
+    // 如何自定义一个私有的过滤器
+    const vm2 = new Vue({
+      el: ".app2",
+      data: {
+        dt: new Date()
+      },
+      methods: {},
+      filters: { // 定义私有过滤器， 过滤器有两个条件，【过滤器名称 和 处理函数】
+        // 过滤器调用的时候，采用的是就近原则，如果私有过滤器和全局过滤器重名了。
+        // 优先采用的是私有过滤器
+        dateFormat: function (dataStr, pattern = '') {
+          const dt = new Date(dataStr);
+          const y = dt.getFullYear();
+          const m = (dt.getMonth() + 1).toString().padStart(2, '0');
+          const d = dt.getDate().toString().padStart(2, '0');
+
+          if (pattern.toLowerCase() === 'yyyy-mm-dd') {
+            return ` ${y}-${m}-${d} `
+          } else {
+            const hh = dt.getHours().toString().padStart(2, '0');
+            const mm = dt.getMinutes().toString().padStart(2, '0');
+            const ss = dt.getSeconds().toString().padStart(2, '0');
+
+            return ` ${y}-${m}-${d} ${hh}:${mm}:${ss} 这是私有财产`
+
+          }
+        }
+      },
+      directives: {
+        'fontweight': {
+          bind(el, binding) {
+            el.style.fontWeight = binding.value;
+          }
+        },
+        'fontsize': (el, binding) => {  //这个function 等同于把 代码写到了bind 和 update中去
+          el.style.fontSize = parseInt(binding.value) + "px";
+        }
+      }
+    });
+
+
+
+
+    // 过滤器的定义语法
+    // Vue.filter('过滤器的名称',function(){})
+
+    // 过滤器中的 funciton ，第一个参数，已经被规定死了，永远都是 过滤器管道符前面传递过来的数据.
+    // Vue.filter('过滤器的名称', function (data) { })
+    // Vue 不提倡操作DOm
+    // document.getElementById('search').focus();
+  </script>
+</body>
+
+</html>
+
+<!-- 过滤器调用时候的格式 {{ name | 过滤器的名称 }} -->

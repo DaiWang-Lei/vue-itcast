@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>使用钩子函数模拟小球半场动画</title>
+  <script src="../node_modules/vue/dist/vue.min.js"></script>
+  <style>
+    .ball {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background-color: lightcoral;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app">
+    <input type="button" value="快去下边" @click='flag=!flag'>
+    <transition @before-enter="beforeEnter" @enter="enter" @after-enter="afterEnter">
+      <div class="ball" v-if='flag'></div>
+    </transition>
+  </div>
+
+  <script>
+    var vm = new Vue({
+      el: '#app',
+      data: {
+        flag: false
+      },
+      methods: {
+        // 动画钩子函数的第一个参数：el,表示要执行动画的那个dom元素，是个原生的JSDom对象
+        // 可以认为el是这么获取到的：document.getElementById('')
+        beforeEnter(el) { //动画入场之前，动画尚未开始，可在其中设置元素动画开始前的起始样式
+          // 设置小球开始动画之前的起始位置0，0是坐标
+          el.style.transform = "translate(0,0)"
+        },
+        enter(el, done) {
+          // 这句话，没有实际的作用，但是，如果不写，出不来动画效果
+          // 可以认为，el.offsetWidth 会强制动画刷新
+          el.offsetWidth
+          // enter 表示动画开始之后的样式，这里可以设置，小球完成你动画之后的结束状态
+          el.style.transform = "translate(110px,450px)" //x,y
+          el.style.transition = "all 1s ease"
+          
+          // 这里的done()，其实就是afterEnter 这个函数，
+          // 也就是说：done是afterEnter函数的引用
+          done();
+        },
+        afterEnter(el) {
+          // 动画完成之后会调用
+          console.log('ok')
+          // this.flag = !this.flag;
+        }
+      }
+    });
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>动画-列表动画</title>
+  <script src="../node_modules/vue/dist/vue.min.js"></script>
+  <style>
+    li {
+      border: 1px dashed #999;
+      margin: 5px;
+      line-height: 35px;
+      padding-left: 5px;
+      font-size: 14px;
+      width: 100%;
+    }
+
+    .v-enter,
+    .v-leave-to {
+      opacity: 0;
+      transform: translateY(100px);
+    }
+
+    .v-enter-active,
+    .v-leave-active {
+      transition: all 1s ease;
+    }
+
+    /* 下面的 .v-move 和 .v-leave-active 配合使用，能够实现列表后续的元素渐渐的漂上来的效果*/
+    .v-move {
+      transition: all 1s ease;
+    }
+
+    .v-leave-active {
+      position: absolute;
+    }
+
+    li:hover {
+      background-color: skyblue;
+      transition: all 1s ease;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app">
+    <div>
+      <label>
+        Id:
+        <input type="text" v-model='id'>
+      </label>
+
+      <label>
+        Name:
+        <input type="text" v-model='name'>
+      </label>
+      <input type="button" value="添加" @click='add'>
+    </div>
+    <!-- 在实现列表过度的时候，如果需要过渡的元素，是通过v-for循环渲染出来的，不能使用transition包裹住
+      需要使用transition-group -->
+    <!-- 如果要为v-for循环创建的元素设置动画，必须为每个元素设置：Key属性 -->
+    <!-- 给transition-group 添加appear属性，实现页面刚展示出来时候入场时候的动画效果 -->
+    <!-- 通过为 transition-group元素，设置tag属性，指定transiton-group渲染为指定元素，
+    如果不指定tag属性，默认渲染为span标签 -->
+    <transition-group appear tag="ul">
+      <li v-for="(item,i) in list" :key='item.id' @click="del(i)">
+        {{item.id}} ----{{item.name}}
+      </li>
+    </transition-group>
+
+  </div>
+
+  <script>
+    var vm = new Vue({
+      el: '#app',
+      data: {
+        id: '',
+        name: '',
+        list: [
+          { id: 1, name: '代罔' },
+          { id: 2, name: '惜夏' },
+          { id: 3, name: '夏👀' },
+          { id: 4, name: '顾夏' },
+        ]
+      },
+      methods: {
+        add() {
+          this.list.push({ id: this.id, name: this.name });
+          this.name = this.id = '';
+        },
+        del(i) {
+          this.list.splice(i, 1);
+        }
+      }
+    });
+  </script>
+</body>
+
+</html>

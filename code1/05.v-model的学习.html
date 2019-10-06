@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>v-model的学习</title>
+  <script src="../node_modules/vue/dist/vue.min.js"></script>
+</head>
+
+<body>
+  <div class="app">
+   <h4>{{msg}}</h4>
+   <!-- v-bind 只能实现数据的单向绑定，从 M 自动绑定到 V -->
+   <input type="text" :value="msg" style="width: 100%">
+   <!-- v-model 可以实现数据 表单元素和 Model中数据的双向绑定 -->
+   <!-- v-model 只能运用在 表单元素中 input(radio,text,address,email) select checkbox textarea -->
+   <input type="text" v-model="msg" style="width: 100%">
+
+  </div>
+
+  <script>
+    const vm = new Vue({
+      el: ".app",
+      data:{
+        msg:'我❤️洗澡🛀，皮肤好好，😯😯😯'
+      },
+      methods:{}
+    });
+    console.log(vm);
+  </script>
+</body>
+
+</html>

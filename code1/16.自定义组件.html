@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="../node_modules/vue/dist/vue.js"></script>
+</head>
+
+<body>
+  <div id="app">
+    <input type="text" v-color="msg">
+    <input type="text" v-focus>
+  </div>
+
+  <script>
+    var vm = new Vue({
+      el: '#app',
+      data: {
+        msg:{
+          color:'lightgreen'
+        }
+      },
+      methods: {},
+      directives:{
+        color(el,binding){
+          el.style.backgroundColor = binding.value.color;
+        },
+        focus:{
+          inserted:function(el){
+            el.focus();
+          }
+        }
+      }
+    });
+  </script>
+</body>
+
+</html>

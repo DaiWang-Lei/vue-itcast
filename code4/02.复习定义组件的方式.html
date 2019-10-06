@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>复习定义组件的方式</title>
+  <script src="../node_modules/vue/dist/vue.js"></script>
+</head>
+
+<body>
+  <div id="app">
+    <mylala2></mylala2>
+  </div>
+  <template id="666">
+
+  </template>
+
+  <script>
+    // 定义组件的时候，如果要定义全局的组件，Vue.component('组件的名称'，组件的模版对象)
+
+    // 通过 对象字面量的形式，定义了一个 组件模版对象
+    const lala = {
+      template: '<h1>我是lal👩‍❤️a‍👩</h1>',
+    }
+    // 通过 Vue.component 把组件模版对象，注册为一个全局方Vue组件，同时，为这个组件
+    // 起了一个名称，可以让我们 通过标签形式，在页面中直接引入这个组件。
+    Vue.component('mylala', lala)
+    var vm = new Vue({
+      el: '#app',
+      data: {},
+      methods: {},
+      components:{
+        // 组件名称，组件模版对象
+        mylala2:lala
+      },
+    });
+  </script>
+</body>
+
+</html>

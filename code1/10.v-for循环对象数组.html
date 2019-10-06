@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="../node_modules/vue/dist/vue.min.js"></script>
+</head>
+
+<body>
+  <div class="app">
+    <p v-for="(people,i) in list">index:{{i}}------用户🆔：{{people.id}}--------用户姓名:{{people.name}}</p>
+    <p v-for="(people,i) in list">{{`index:${i}-----用户🆔:${people.id}------用户姓名:${people.name}`}}</p>
+  </div>
+
+  <script>
+    const vm = new Vue({
+      el: ".app",
+      data:{
+        list:[
+          {id: 1,name:'DaiW1'},
+          {id: 2,name:'DaiW2'},
+          {id: 3,name:'DaiW3'},
+          {id: 4,name:'DaiW4'}
+        ]
+      },
+      methods:{}
+    });
+  </script>
+</body>
+
+</html>

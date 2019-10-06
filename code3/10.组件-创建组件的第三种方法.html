@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="../node_modules/vue/dist/vue.min.js"></script>
+</head>
+
+<body>
+  <div id="app">
+    <my-com3></my-com3>
+
+  </div>
+
+  <div id="app2">
+    <my-com3></my-com3>
+    <login></login>
+  </div>
+
+
+  <!-- 在被控制方 #app 外面，使用template 元素，定义组件的HTML模版结构 -->
+  <template id="tmp1">
+    <div>
+      <h3>滚滚长江东逝水</h3>
+      <h2>浪花🌊淘尽英雄</h2>
+      <h1>是非成败转头空</h1>
+    </div>
+  </template>
+  <template id="tmp2">
+    
+      <h1>这是私有的login组件</h1>
+    
+  </template>
+  <script>
+    Vue.component('myCom3', {
+      template: '#tmp1'
+    })
+    var vm = new Vue({
+      el: '#app',
+      data: {},
+      methods: {}
+    });
+    var vm = new Vue({
+      el: '#app2',
+      data: {},
+      methods: {},
+      filters: {},
+      directives: {},
+      components: {
+        login: {
+          template: '#tmp2'
+        }
+      },
+
+      beforeCreate() { },
+      created() { },
+      beforeMount() { },
+      mounted() { },     //生命周期钩子函数
+      beforeUpdate() { },
+      updated() { },
+      beforeDestroy() { },
+      destroyed() { },
+    });
+  </script>
+</body>
+
+</html>

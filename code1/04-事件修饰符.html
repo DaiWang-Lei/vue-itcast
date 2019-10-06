@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>事件修饰符</title>
+  <script src="../node_modules/vue/dist/vue.min.js"></script>
+  <style>
+    .inner {
+      height: 150px;
+      background-color: lightcyan;
+    }
+
+    .outer {
+      padding: 40px;
+      background-color: lightcoral;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app">
+
+    <!-- 使用 .stop 阻止冒泡
+    <div class="inner" @click='divHandler'>
+      <input type="button" value="茶渣刺扎" @click.stop='btnHandler'>
+    </div> -->
+
+
+    <!-- 使用 .prevent 阻止默认事件 -->
+    <!-- <a href="http://www.baidu.com" @click.prevent='aHandler'>有问题🤔️，去百度。</a> -->
+
+
+    <!-- 使用 .capture 实现捕获触发事件的机制 -->
+    <!-- <div class="inner" @click.capture='divHandler'>
+      <input type="button" value="茶渣刺扎" @click='btnHandler'>
+    </div> -->
+
+    <!-- 使用 .self 实现只有点击当前元素的时候，才会触发事件处理函数 -->
+    <!-- <div class="inner" @click.self='divHandler'>
+      <input type="button" value="茶渣刺扎" @click='btnHandler'>
+    </div> -->
+
+    <!-- 使用 .once 只触发一次事件处理函数 -->
+    <a href="http://www.baidu.com" @click.prevent.once='aHandler'>有问题🤔️，去百度。</a>
+
+
+    <!-- 演示 .stop 和 .self的区别 -->
+    <!-- <div class="outer" @click='outerHandler'>
+      <div class="inner" @click='divHandler'>
+        <input type="button" value="茶渣刺扎" @click.stop='btnHandler'>
+      </div>
+    </div> -->
+    <!-- .self只会阻止自己身上的冒泡行为，并不会真正的阻止冒泡行为 -->
+    <div class="outer" @click='outerHandler'>
+      <div class="inner" @click.self='divHandler'>
+        <input type="button" value="茶渣刺扎" @click='btnHandler'>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const vm = new Vue({
+      el: "#app",
+      data: {},
+      methods: {
+        divHandler() {
+          console.log("This is DIV");
+        },
+        btnHandler() {
+          console.log("This is Btn");
+        },
+        aHandler() {
+          console.log("This is A");
+        },
+        outerHandler() {
+          console.log("This is Outer");
+
+        }
+      }
+    })
+  </script>
+</body>
+
+</html>

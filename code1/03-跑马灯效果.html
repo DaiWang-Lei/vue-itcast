@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="../node_modules/vue/dist/vue.min.js"></script>
+  <style>
+    input {
+      width: 90px;
+    }
+
+    #didi {
+      font-style: italic;
+    }
+  </style>
+</head>
+
+<body>
+  <s>999</s>
+  <i>都是的弟弟</i>
+  <ins id="didi">都是弟弟</ins>
+  <div id="app">
+    <input type="button" value="🏃跑起来🏃‍♀️" @click="run">
+    <input type="button" value="木头人👀" @click="stop">
+    <h4>{{msg}}</h4>
+  </div>
+
+  <script>
+    // 注意： 在vue实例中，如果想要获取 data 上的数据 或者 想调用 data 上的方法，
+    // 必须通过this.数据属性名 或者 this.方法名，这里的 this ，就表示 我们 new 出来的 vm实例对象。
+    const vm = new Vue({
+      el: '#app',
+      data: {
+        msg: '你是最胖的，加油⛽️！稳住，我们能赢！✌️',
+        intervalId: null // 在data上定义 定时器 id
+      },
+      methods: {
+        run() {
+          if (this.intervalId !== null) return;
+
+          this.intervalId = setInterval(() => {
+            // 获取到头到第一个字符串
+            let start = this.msg.substring(0, 1);
+            // 获取 后面的所有字符串
+            let end = this.msg.substring(1);
+            // 重新拼接 得到新的字符串，赋值给this.msg
+            this.msg = end + start;
+            console.log(this.msg);
+            // 注意：vm实例 会监听自己身上的 data 中的所有数据的改变，
+            //  只要数据发生变化，就会自己把最新的数据，从 data 上同步到页面中去
+            // 【好处：，只需要关心数据，减少对Dom的操作，不需要考虑如何渲染到页面】
+          }, 400)
+        },
+        stop() {
+          clearInterval(this.intervalId);
+          // 每当清除了定时器之后，需要重新把定时器设置成null
+          this.intervalId = null;
+
+        }
+      }
+    });
+
+  </script>
+
+
+
+
+
+
+
+
+
+
+  <!-- <script>
+  const xhr = new XMLHttpRequest();
+
+  xhr.onreadystatechange = function(){
+    if(xhr.readyState === 4 && xhr.status === 200){
+      response.send()
+    }
+  }
+
+  xhr.open('GET','http://www.localhost:3000/dsad?adasd=adad&adadad=adad');
+
+  xhr.send();
+  
+
+
+</script> -->
+</body>
+
+</html>

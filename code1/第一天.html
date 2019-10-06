@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+    [v-cloak] {
+      display: none;
+    }
+  
+    
+  </style>
+</head>
+
+<body>
+
+  <!--  将来 new 的Vue实例，会控制这个元素中所有的内容 -->
+  <!--  Vue 实例中所控制的元素区域就是V -->
+  <div id="app">
+    <!-- 使用v-cloak可以解决插值表达式闪烁问题的 -->
+    <p v-cloak>+++++{{msg}}------</p>
+    <h4 v-text='msg'></h4>
+    <!-- 默认 V-text 是没有闪烁问题 -->
+    <!-- v-text 会覆盖元素中原本的内容，但是 插值表达式 
+      只会替换自己的占位符（{{msg}}），不会把左右两侧的内容清空 -->
+    <div v-html='msg2'>😂</div>
+    <!-- v-bind 是vue中提供的绑定属性的指令 -->
+    <input type="button" value="按钮" :title=" mytitle +` soga`" @click="alert('Hello,World!')">
+
+  </div>
+  <script src="../node_modules/vue/dist/vue.min.js"></script>
+
+  <script>
+    // 2. 新建一个Vue实例
+    // 当我们导入包之后，在浏览器的内存里就多了一个Vue构造函数  
+    //   注意：我们 new出来的这个vm对象，就是我们mvvm中的VM调度者
+    var vm = new Vue({
+      el: '#app', //当前我们new 的这个Vue实例，要控制的页面上的区域
+      data: { //存放的是el中要用到的数据 ，data 就是MVVM中的M，专门用来保存每个页面中的数据
+        msg: 'Hello World!!',//通过Vue提供的指令，很方便的就能把数据渲染到页面上，
+        // 不用再手动操作DOM元素。【前端Vue之类的框架，不提倡我们去手动操作Dom元素】
+        msg2: '<h2> 世界说,thank you!! </h2>',
+        mytitle: 'This is 我的 title'
+      }
+    })
+
+    // document.getElementById('btn').onclick = function () {
+    //   alert('Hello,World')
+    // }
+  </script>
+</body>
+
+</html>

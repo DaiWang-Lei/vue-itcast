@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>命名试图实现经典布局</title>
+  <script src="../node_modules/vue/dist/vue.js"></script>
+  <script src="../node_modules/vue-router/dist/vue-router.min.js"></script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+
+    .header {
+      background-color: lightsalmon;
+      height: 80px;
+      text-align: center;
+      line-height: 80px;
+    }
+    .container{
+      display: flex;
+      height: 700px;
+
+    }
+    .left{
+      background-color: lightblue;
+      text-align: center;
+      line-height: 700px;
+      flex: 2;
+
+    }
+    .main{
+      background-color: lightpink;
+      line-height: 700px;
+      flex:8;
+      text-align: center;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app">
+    <router-view></router-view>
+    <div class="container">
+      <router-view name='left'></router-view>
+      <router-view name='main'></router-view>
+    </div>
+
+  </div>
+
+  <script>
+    const Header = {
+      template: '<h1 class="header">Header🍑头部组件👣</h1>'
+    };
+    const Left = {
+      template: '<h1 class="left">Left侧边栏组件👣</h1>'
+    };
+    const Main = {
+      template: '<h1 class="main">Main🐯主体组件👣</h1>'
+    };
+    const router = new VueRouter({
+      routes: [
+        // { path: '/', component: Header },
+        // { path: '/left', component: Left },
+        // { path: '/main', component: Main },
+
+        {
+          path: '/', components: {
+            default: Header,
+            left: Left,
+            main: Main
+          }
+        },
+
+      ]
+    });
+    var vm = new Vue({
+      el: '#app',
+      data: {},
+      methods: {},
+      router
+    });
+  </script>
+</body>
+
+</html>

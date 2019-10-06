@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="../node_modules/vue/dist/vue.js"></script>
+</head>
+
+<body>
+  <div id="app">
+    姓：<input type="text" v-model='firstname'> +
+    名字：<input type="text" v-model='secondname'> =
+    全名：<input type="text" v-model='fullname'>
+
+
+  </div>
+
+  <script>
+    var vm = new Vue({
+      el: '#app',
+      data: {
+        firstname: '',
+        secondname: '',
+        fullname: ''
+      },
+      methods: {},
+      watch: { // 使用这个属性，可以监视到data中指定数据到变化，然后触发这个watch中对应到function处理函数
+        firstname(newVal,oldVal) {
+          this.fullname = `${newVal} - ${this.secondname}`;
+        },
+        secondname(newVal,oldVal) {
+          this.fullname = `${this.firstname} - ${newVal}`;
+        }
+      }
+    });
+  </script>
+</body>
+
+</html>

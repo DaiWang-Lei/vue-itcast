@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="../node_modules/vue//dist/vue.min.js"></script>
+</head>
+
+<body>
+  <div class="app">
+    <p>{{ msg | msgFormat('rock','666','niuniuniu')|test}}</p>
+    {{1+1}}
+  </div>
+
+  <script>
+
+    // 定一个Vue全局的过滤器，名字叫做msgFormat
+    Vue.filter('msgFormat', function (msg, rock, ...arg) {
+      // 字符串的 replace方法，第一个参数，除了可写一个字符串以外，还可以定义一个正则
+      return msg.replace(/单纯/g, rock + [...arg]);
+    });
+    Vue.filter("test", function (msg) { 
+      return msg + "======"
+    })
+
+    const vm = new Vue({
+      el: ".app",
+      data: {
+        msg: '现在，还是一个单纯的少年，问问还有谁geng单纯！'
+      },
+      methods: {}
+    });
+  </script>
+</body>
+
+</html>

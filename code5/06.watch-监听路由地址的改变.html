@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>复习路由的基本使用</title>
+  <script src="../node_modules/vue/dist/vue.js"></script>
+  <script src="../node_modules/vue-router/dist/vue-router.min.js"></script>
+
+</head>
+
+<body>
+  <div id="app">
+    <router-link to='/login'>🏮登陆</router-link>
+    <router-link to='/register'>®️注册</router-link>
+    <router-view></router-view>
+  </div>
+
+  <script>
+
+    const login = {
+      template: '<h1>🏮登陆呀，🐛🐛呀呀呀！！！</h1>'
+    }
+    const register = {
+      template: '<h1>不🐷注册®️，怎么🏮登陆呀，🐛🐛呀！！！</h1>'
+    }
+    const router = new VueRouter({
+      routes: [
+        { path: '/', redirect: '/login' },
+        { path: '/login', component: login },
+        { path: '/register', component: register },
+      ]
+    });
+    var vm = new Vue({
+      el: '#app',
+      data: {},
+      methods: {},
+      router,
+      watch: {
+        '$route.path': (newVal, oldVal) => {
+          if (newVal === '/login') {
+            console.log('👏欢迎进入登陆页面！')
+          }else if(newVal='/register'){
+            console.log('👏欢迎进入🐷注册页面！')
+            
+          }
+        }
+      }
+    });
+  </script>
+</body>
+
+</html>

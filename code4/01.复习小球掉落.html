@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="../node_modules/vue/dist/vue.min.js"></script>
+  <style>
+    .ball {
+      width: 20px;
+      height: 20px;
+      background-color: lightsalmon;
+      border-radius: 50%;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app">
+    <input type="button" value="⬇️去" @click='flag=!flag'>
+    <transition @before-enter='beforeEnter' @enter='enter' @after-enter='afterEnter'>
+      <div class="ball" v-if='flag'></div>
+    </transition>
+
+  </div>
+
+  <script>
+    var vm = new Vue({
+      el: '#app',
+      data: {
+        flag: false
+      },
+      methods: {
+        beforeEnter(el) {
+          el.style.transform = 'translate(0,0)'
+        },
+        enter(el, done) {
+          el.offsetWidth;
+          el.style.transform = "translate(150px,400px)";
+          el.style.transition = 'all 1s ease';
+          done();
+        },
+        afterEnter(el) {
+          // 这句话，第一个功能是，控制小球的显示与隐藏
+          // 第二个功能：直接跳过后半场动画，让flag标识符。直接变为flase
+          // 当第二次点击按钮的时候，flag，false -> true
+          this.flag=!this.flag;
+        }
+
+      }
+    });
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>组件-创建组件的方式1</title>
+  <script src="../node_modules/vue/dist/vue.min.js"></script>
+</head>
+
+<body>
+  <div id="app">
+    <!-- 如果要使用组件，直接，把组件的名称，以HTML标签的形式，引入到页面中，即可 -->
+    <my-com1></my-com1>
+  </div>
+
+  <script>
+    // 1.1 使用 Vue.extend 来创建全局Vue组件
+    // const com1 = Vue.extend({
+    //   // 通过template 属性，指定组件要展示的HTML结构
+    //   template: '<h3> 这是使用Vue.extend 创建的组件</h3>'
+    // })
+
+    // ⚠️注意：如果使用Vue.component定义全局组件的时候，组件名称使用驼峰命名，则在引用组件的时候，需要
+    // 把大写的驼峰改为小写的字母。同时两个单词之间，使用-连接
+    // 如果不使用驼峰，则直接拿名称使用即可
+    // 1.2 使用Vue.component("组件名称"，创建出来的组件模版对象)
+    // Vue.component('myCom1', com1)
+
+
+
+    //  Vue.component第一个参数：组件的名称，将来在引入组件的时，就是用一个标签引入它的
+    // 第二个参数：Vue.extend 创建的组件，其中template 就是组件将来展示的HTML内容
+    Vue.component('myCom1', Vue.extend({
+      template: '<h3> 这是使用Vue.extend 创建的组件</h3>'
+    }))
+
+
+    var vm = new Vue({
+      el: '#app',
+      data: {},
+      methods: {}
+    });
+  </script>
+</body>
+
+</html>

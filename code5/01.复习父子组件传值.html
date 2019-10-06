@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="../node_modules/vue/dist/vue.js"></script>
+
+</head>
+
+<body>
+  <div id="app">
+    {{msgFromSon}}
+    <com1 :fathermsg='msg' @func='getMsgFromSon'></com1>
+  </div>
+
+  <template id="tmpl">
+    <div>
+      <h1>这是子👣组件 ---{{fathermsg}}</h1>
+      <input type="button" value="🐘父组件传递消息" @click='send'>
+    </div>
+  </template>
+  <script>
+
+    const com1 = {
+      template: "#tmpl",
+      props: [
+        'fathermsg'
+      ],
+      data() {
+        return {
+          msg: '💺快坐，给你💰'
+        }
+      },
+      methods: {
+        send() {
+          this.$emit('func',this.msg);
+        }
+      }
+    }
+    var vm = new Vue({
+      el: '#app',
+      data: {
+        msg: '👨我有100🥢，你要不💊。哈哈🚬',
+        msgFromSon: ''
+      },
+      methods: {
+        getMsgFromSon(data) {
+          this.msgFromSon = data;
+
+        }
+      },
+      components: {
+        com1
+      }
+    });
+  </script>
+</body>
+
+</html>

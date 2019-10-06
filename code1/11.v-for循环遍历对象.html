@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>v-for循环遍历对象</title>
+  <script src="../node_modules/vue/dist/vue.min.js"></script>
+</head>
+
+<body>
+  <div class="app">
+    <!-- 注意在遍历对象身上键值对的时候，除了有 key 和 value 在第三个位置还有一个索引-->
+    <p v-for="(val,key,i) in user">index:{{i}}-------属性是：{{key}}----值是：{{val}}</p>
+  </div>
+
+  <script>
+    const vm = new Vue({
+      el: ".app",
+      data: {
+        user: {
+          id: 1,
+          name: "代罔",
+          gender: '男'
+        }
+      },
+      methods: {}
+    });
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="../node_modules/vue/dist/vue.min.js"></script>
+  <link rel="stylesheet" href="../lib/bootstrap.css">
+
+</head>
+
+<body>
+  <div class="app">
+
+
+    <div class="panel panel-primary">
+      <div class="panel-heading">
+        <h3 class="panel-title">添加品牌</h3>
+      </div>
+      <div class="panel-body form-inline">
+        <label>
+          Id:
+          <input type="text" class="form-control" v-model="id" :disabled='flag' v-focus>
+        </label>
+
+        <label>
+          Name:
+          <input type="text" class="form-control" v-model="name" @keyup.enter='add'>
+        </label>
+
+        <label>
+          🔍搜索名称关键字:
+          <input type="text" class="form-control" v-model="keywords">
+        </label>
+
+
+        <!-- 使用v-on 绑定事件时，添加括号，用于传参 -->
+        <input type="button" value="提交" class="btn btn-primary" @click="add()" :disabled="submitflag">
+      </div>
+    </div>
+    <table class="table table-hover table-bordered table-striped total ">
+      <span><b>品牌总数:</b></span>
+      <span>{{total}}</span>
+    </table>
+
+    <table class="table table-hover table-bordered table-striped">
+      <thead>
+        <tr>
+          <th>Id</th>
+          <th>Name</th>
+          <th>ctime</th>
+          <th>Operation</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- 之前， v-for中的数据，都是直接从data上的list中直接渲染过来的！ -->
+        <!-- 现在自定义了search方法，同时把 搜索的关键字通过传参的形式，传递给了serch方法 -->
+        <!-- 在 search 方法内部，通过 执行 for 循环，把所有符合 搜索关键字的数据，保存到 一个新的数组中
+      返回 -->
+        <tr v-for="item in search(keywords)" :key="item.id ">
+          <td>{{item.id}}</td>
+          <td v-text="item.name"></td>
+          <td>{{item.ctime}}</td>
+          <td>
+            <a href="#" @click.prevent="toEdit(item.id)">修改</a>
+            <span>|</span>
+            <a href="#" @click.prevent="del(item.id)">删除</a>
+
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+  </div>
+  <script>
+    Vue.directive('focus', {
+      inserted(el) {
+        el.focus();
+      }
+    })
+    const vm = new Vue({
+      el: ".app",
+      data: {
+        submitflag: false,
+        flag: false,
+        list: [],
+        id: '',
+        name: '',
+        keywords: '' //搜索的关键字
+      },
+      methods: {
+        add() {
+          if (this.flag) {
+            //编辑修改
+            this.list.some((item) => {
+              if (item.id == this.id) {
+                item.name = this.name;
+                return true;
+              }
+            });
+            this.name = '';
+            this.id = '';
+            this.flag = !this.flag;
+          } else {
+            //添加
+            this.list.push({ id: this.id, name: this.name, ctime: new Date() });
+          }
+          this.id = this.name = " ";
+        },
+        toEdit(id) {
+          //根据id查询出要编辑的数据
+          let list = this.list.filter((item) => {
+            return item.id == id;
+          })
+          console.log(list);
+          //把获取的信息填充到表单
+          this.id = list[0].id;
+          this.name = list[0].name;
+          //禁止修改id🈲️
+          this.flag = true;
+        },
+        del(id) {
+          // this.list.some((item, i) => {
+          //   if (item.id == id) {
+          //     this.list.splice(i,1);
+          //     // 在数组的some方法中，如果return true， 就会立即终止这个数组的后续循环
+          //     return true;
+          //   }
+          // })
+
+          const index = this.list.findIndex((item) => {
+            if (item.id == id) {
+              return true;
+            }
+          });
+          //根据索引删除数组元素
+          this.list.splice(index, 1);
+        },
+        search(keywords) { //根据关键字，进行数据的搜索
+          // let newList = []
+          // this.list.forEach(item => {
+          //   if (item.name.indexOf(keywords) != -1){
+          //     newList.push(item);
+          //   }
+          // })
+          // return newList;
+
+          // 注意 ： forEach some filter findIndex every 都属于数组的新方法
+          // 都会对数组的每一项，进行遍历，执行相关的操作；
+          return this.list.filter(item => {
+            // if(item.name.indexOf(keywords) != -1)
+            // 在 es6 中，为字符串提供了一个新方法，叫做 String.prototype.includes（‘要包含的字符串’）
+            // 如果包含返回true，否则返回false
+            if (item.name.includes(keywords)) {
+              return item;
+            }
+          })
+        }
+      },
+      computed: {
+        total: function () {
+          return this.list.length;
+        }
+      },
+      watch: {
+        name(val) {
+          let flag = this.list.some((item) => {
+            return item.name == val;
+          });
+          if (flag) {
+            this.submitflag = true;
+          } else {
+            this.submitflag = false;
+          }
+        }
+      },
+      mounted: function () {
+        let data = [
+          { id: 1, name: '华为', ctime: new Date() },
+          { id: 2, name: '苹果🍎', ctime: new Date() },
+        ]
+        this.list= data;
+      }
+    });
+  </script>
+</body>
+
+</html>

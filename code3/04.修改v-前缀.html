@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>动画-使用过渡类名实现动画</title>
+  <script src="../node_modules/vue/dist/vue.min.js"></script>
+  <style>
+    .my-enter,
+    .my-leave-to {
+      opacity: 0;
+      transform: translatey(180px)
+    }
+
+    .my-enter-active,
+    .my-leave-active {
+      transition: all 1s ease;
+    }
+
+    .v-enter,
+    .v-leave-to {
+      opacity: 0;
+      transform: translateX(180px)
+    }
+
+    .v-enter-active,
+    .v-leave-active {
+      transition: all 1s ease;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app">
+    <input type="button" value="toggle" @click='flag=!flag'>
+
+    <transition name='my'>
+      <h3 v-if='flag'>这是☝️H3,are you 👌</h3>
+    </transition>
+
+    <hr>
+    <input type="button" value="toggle2" @click='flag2=!flag2'>
+    <transition>
+      <h5 v-if='flag2'>🚗🚄🚓🚒✈️🚀来喽。</h5>
+    </transition>
+  </div>
+
+  <script>
+    var vm = new Vue({
+      el: '#app',
+      data: {
+        flag: false,
+        flag2: false
+      },
+      methods: {}
+    });
+  </script>
+</body>
+
+</html>

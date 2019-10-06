@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="../node_modules/vue/dist/vue.js"></script>
+</head>
+
+<body>
+  <div id="app">
+    <input type="button" value="Chaka🍵" @click='check' ref='mybtn'>
+    <h3 id="myh3" ref='myh3'>斯人若🌈，🌧️方知🈶️</h3>
+
+    <hr>
+
+    <login ref="mylogin"></login>
+  </div>
+
+
+
+  <script>
+
+
+    const login = {
+      template: `<h1>🏮🧱抢滩登陆呀！🦷</h1>`,
+      data() {
+        return {
+          msg : '👌son msg'
+        }
+      },
+      methods:{
+        show(){
+          console.log('这是🀄️子组件的show😡方法')
+        }
+      }
+
+    }
+    var vm = new Vue({
+      el: '#app',
+      data: {},
+      methods: {
+        check() {
+          // 酷炫的Vue操作方式
+          // ref 是 英文单词【reference】 引用
+          console.log(this.$refs.myh3.innerText);
+          console.log(this.$refs.mybtn.value);
+          this.$refs.mylogin.show();
+
+
+
+
+          // 原生DOM操作方式。
+          // console.log(document.getElementById('myh3').innerText);
+        }
+      },
+      components: {
+        login
+      }
+    });
+  </script>
+</body>
+
+</html>

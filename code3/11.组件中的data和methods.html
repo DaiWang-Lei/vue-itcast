@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="../node_modules/vue/dist/vue.min.js"></script>
+</head>
+
+<body>
+  <div id="app">
+    <my-com1></my-com1>
+  </div>
+
+  <script>
+    // 组件可以有自己的data
+    Vue.component('myCom1', {
+      template: '<h1>浪花🌊淘尽英雄，全局组件---{{msg}}</h1>',
+      // 组件中的data必须为一个函数function(){}，内部返回一个对象{}
+      // 组件中的data数据的使用方式，和实例中一样
+      data: () => {
+        return {
+          msg:'这是组件自己的data定义的私有数据'
+        }
+      }
+
+    })
+    var vm = new Vue({
+      el: '#app',
+      data: {},
+      methods: {}
+    });
+  </script>
+</body>
+
+</html>

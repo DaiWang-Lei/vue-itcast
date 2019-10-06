@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="../node_modules/vue/dist/vue.min.js"></script>
+</head>
+
+<body>
+  <div id="app">
+    <my-com2></my-com2>
+  </div>
+
+  <script>
+
+    Vue.component('myCom2', {
+      // 无论是哪种方式创建出来的组件，组件的template属性指向的模版内，有且只有一个根元素
+      template: `
+     <div>
+        <h2>这是第二种方法</h2>
+        <span>1232</span>
+    </div>
+      `
+    })
+    var vm = new Vue({
+      el: '#app',
+      data: {},
+      methods: {}
+    });
+  </script>
+</body>
+
+</html>
